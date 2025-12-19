@@ -1,0 +1,52 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform fmt
+        run: terraform fmt -recursive -check
+
+  validate-root:
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Init (root)
+        run: terraform init -backend=false
+
+      - name: Terraform Validate (root)
+        run: terraform validate
+
+  validate-example-basic:
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Init (example/basic)
+        working-directory: examples/basic
+        run: terraform init -backend=false
+
+      - name: Terraform Validate (example/basic)
+        working-directory: examples/basic
+        run: terraform validate
