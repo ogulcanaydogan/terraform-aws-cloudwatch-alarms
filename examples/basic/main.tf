@@ -6,11 +6,11 @@ variable "instance_id" {
 module "ec2_alarms" {
   source = "../.."
 
-  name              = "example"
-  instance_id       = var.instance_id
-  create_sns_topic  = true
-  cpu_threshold     = 75
-  cpu_period        = 300
+  name                   = "example"
+  instance_id            = var.instance_id
+  create_sns_topic       = true
+  cpu_threshold          = 75
+  cpu_period             = 300
   cpu_evaluation_periods = 2
 
   tags = {
